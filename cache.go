@@ -27,7 +27,7 @@ func Cache[T any](fn any) func(...any) T {
 
 		// dp se nikalne ka kam
 		if exists, ok := mp[key]; ok {
-			fmt.Println("mil gya")
+			// fmt.Println("mil gya")
 			return exists
 		}
 
