@@ -1,3 +1,4 @@
+// Package cache provides Cache method to cache function output
 package cache
 
 import (
@@ -5,7 +6,8 @@ import (
 	"reflect"
 )
 
-func Cache[T any](fn any) func(...T) T {
+// Cache takes in an input function and caches its output
+func Cache[T any](fn any) func(...any) T {
 	fnValue := reflect.ValueOf(fn)
 	n := fnValue.Type().NumIn()
 	fmt.Println(n)
@@ -16,7 +18,7 @@ func Cache[T any](fn any) func(...T) T {
 		panic("type should be function")
 	}
 
-	return func(args ...T) T {
+	return func(args ...any) T {
 		if len(args) != n {
 			panic("invalid number of args")
 		}
