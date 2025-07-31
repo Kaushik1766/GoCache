@@ -23,7 +23,6 @@ func Cache[T any](fn any) func(...any) T {
 		for i := range n {
 			fnArgType := fnValue.Type().In(i)
 			passedArgType := reflect.TypeOf(args[i])
-			// fmt.Printf("%v %v\n", fnArgType, passedArgType)
 			if fnArgType != passedArgType {
 				panic("type of input parameters don't match type of function parameters")
 			}
@@ -31,9 +30,7 @@ func Cache[T any](fn any) func(...any) T {
 
 		key := toString(args)
 
-		// dp se nikalne ka kam
 		if exists, ok := mp[key]; ok {
-			// fmt.Println("mil gya")
 			return exists
 		}
 
