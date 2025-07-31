@@ -12,15 +12,21 @@ func Cache[T any](fn any) func(...any) T {
 	n := fnValue.Type().NumIn()
 	fmt.Println(n)
 	mp := make(map[string]T)
-	switch v := reflect.ValueOf(fn); v.Kind() {
-	case reflect.Func:
-	default:
-		panic("type should be function")
+	if fnValue.Kind() != reflect.Func {
+		panic("invalid input type")
 	}
-
 	return func(args ...any) T {
 		if len(args) != n {
 			panic("invalid number of args")
+		}
+
+		for i := range n {
+			fnArgType := fnValue.Type().In(i)
+			passedArgType := reflect.TypeOf(args[i])
+			// fmt.Printf("%v %v\n", fnArgType, passedArgType)
+			if fnArgType != passedArgType {
+				panic("type of input parameters don't match type of function parameters")
+			}
 		}
 
 		key := toString(args)
@@ -36,7 +42,6 @@ func Cache[T any](fn any) func(...any) T {
 		for i, val := range args {
 			reflectArgs[i] = reflect.ValueOf(val)
 		}
-		fmt.Println(reflectArgs)
 		result := fnValue.Call(reflectArgs)
 		out := result[0].Interface().(T)
 		mp[key] = out
