@@ -23,7 +23,7 @@ func Cache[T any](fn any) func(...any) T {
 			panic("invalid number of args")
 		}
 
-		key := ToString(args)
+		key := toString(args)
 
 		// dp se nikalne ka kam
 		if exists, ok := mp[key]; ok {
@@ -44,7 +44,7 @@ func Cache[T any](fn any) func(...any) T {
 	}
 }
 
-func ToString[T any](inp []T) string {
+func toString[T any](inp []T) string {
 	res := ""
 	for _, val := range inp {
 		res += fmt.Sprintf("%v,", val)
